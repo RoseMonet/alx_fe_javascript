@@ -99,16 +99,18 @@ function getFilteredQuotes() {
   return selectedCategory === 'all' ? quotes : quotes.filter(quote => quote.category === selectedCategory);
 }
 
-function fetchQuotesFromServer() {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(data => {
-      const newQuotes = data.map(post => ({ text: post.title, category: "Server" }));
-      quotes.push(...newQuotes);
-      saveQuotes();
-      populateCategories();  // Update category filter
-      alert('New quotes fetched from server successfully!');
-    });
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const data = await response.json();
+    const newQuotes = data.slice(0, 5).map(post => ({ text: post.title, category: "Server" }));
+    quotes.push(...newQuotes);
+    saveQuotes();
+    populateCategories();  // Update category filter
+    alert('New quotes fetched from server successfully!');
+  } catch (error) {
+    console.error('Error fetching quotes from server:', error);
+  }
 }
 
 setInterval(fetchNewQuotesFromServer, 60000);
