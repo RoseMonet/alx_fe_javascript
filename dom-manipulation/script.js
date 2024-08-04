@@ -113,7 +113,34 @@ async function fetchQuotesFromServer() {
   }
 }
 
-setInterval(fetchNewQuotesFromServer, 60000);
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(quote)
+    });
+    const data = await response.json();
+    console.log('Posted quote to server:', data);
+  } catch (error) {
+    console.error('Error posting quote to server:', error);
+  }
+}
+
+async function syncQuotes() {
+  await fetchQuotesFromServer();
+  const unsyncedQuotes = quotes.filter(quote => !quote.synced);
+  for (const quote of unsyncedQuotes) {
+    await postQuoteToServer(quote);
+    quote.synced = true;
+  }
+  saveQuotes();
+  alert('Quotes synced with server successfully!');
+}
+
+setInterval(syncQuotes, 60000);
 
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
