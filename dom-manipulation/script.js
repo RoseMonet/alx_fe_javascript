@@ -140,6 +140,16 @@ async function syncQuotes() {
   alert('Quotes synced with server successfully!');
 }
 
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    document.body.removeChild(notification);
+  }, 3000); // Remove notification after 3 seconds
+}
+
 setInterval(syncQuotes, 60000);
 
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
