@@ -38,6 +38,8 @@ function addQuote() {
     quotes.push({ text: newQuoteText, category: newQuoteCategory });
     document.getElementById('newQuoteText').value = '';
     document.getElementById('newQuoteCategory').value = '';
+    saveQuotes();
+    populateCategories(); 
     alert('Quote added successfully!');
   } else {
     alert('Please enter both quote and category.');
@@ -60,6 +62,7 @@ function importFromJsonFile(event) {
     const importedQuotes = JSON.parse(event.target.result);
     quotes.push(...importedQuotes);
     saveQuotes();
+    populateCategories(); 
     alert('Quotes imported successfully!');
   };
   fileReader.readAsText(event.target.files[0]);
@@ -95,6 +98,20 @@ function getFilteredQuotes() {
   const selectedCategory = document.getElementById('categoryFilter').value;
   return selectedCategory === 'all' ? quotes : quotes.filter(quote => quote.category === selectedCategory);
 }
+
+function fetchNewQuotesFromServer() {
+  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(data => {
+      const newQuotes = data.map(post => ({ text: post.title, category: "Server" }));
+      quotes.push(...newQuotes);
+      saveQuotes();
+      populateCategories();  // Update category filter
+      alert('New quotes fetched from server successfully!');
+    });
+}
+
+setInterval(fetchNewQuotesFromServer, 60000);
 
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
