@@ -6,7 +6,7 @@ function saveQuotes() {
 
 function loadQuotes() {
   const storedQuotes = localStorage.getItem('quotes');
-  populateCategoryFilter();
+  populateCategories();
 }
 
 function showRandomQuote() {
@@ -65,7 +65,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-function populateCategoryFilter() {
+function populateCategories() {
   const categoryFilter = document.getElementById('categoryFilter');
   const categories = [...new Set(quotes.map(quote => quote.category))];
   categoryFilter.innerHTML = '<option value="all">All Categories</option>';
