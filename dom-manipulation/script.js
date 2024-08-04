@@ -99,7 +99,7 @@ function getFilteredQuotes() {
   return selectedCategory === 'all' ? quotes : quotes.filter(quote => quote.category === selectedCategory);
 }
 
-function fetchNewQuotesFromServer() {
+function fetchQuotesFromServer() {
   fetch('https://jsonplaceholder.typicode.com/posts')
     .then(response => response.json())
     .then(data => {
