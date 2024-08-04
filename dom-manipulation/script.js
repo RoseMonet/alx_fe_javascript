@@ -137,7 +137,7 @@ async function syncQuotes() {
     quote.synced = true;
   }
   saveQuotes();
-  alert('Quotes synced with server successfully!');
+  alert('Quotes synced with server!');
 }
 
 function showNotification(message) {
